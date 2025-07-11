@@ -1,4 +1,5 @@
 from bt_module.scanner import start_listening
+from bt_module.rssi_reference import start_listening_rssi
 from wifi_module.wifi import connect_wifi, get_example, disconnect_wifi
 
 # Network settings
