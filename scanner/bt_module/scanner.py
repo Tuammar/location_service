@@ -16,8 +16,10 @@ def bt_irq(event, data):
 
     formatted_addr = ':'.join(['%02X' % i for i in addr])
     print(addr_type, formatted_addr, connectable, rssi)
-    # name = parse_name_from_adv_data(rssi)
-    # print(name)
+    name = parse_name_from_adv_data(adv_data)
+    print(name)
+    if name.startswith('cu'):
+        print("HERE")
   elif event == _IRQ_SCAN_DONE:
     # Scan duration finished or manually stopped.
     print('scan complete')

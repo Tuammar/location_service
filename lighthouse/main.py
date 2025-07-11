@@ -6,7 +6,7 @@ AD_TYPE_COMPLETE_LOCAL_NAME = const(0x09)
 
 FLAGS_GENERAL_DISCOVERY = const(0x06) 
 
-device_name = "cu_2025_beacon"
+device_name = "cu_tralalelo"
 
 def create_advertising_data(name):
     flags_data = bytes([AD_TYPE_FLAGS, FLAGS_GENERAL_DISCOVERY])

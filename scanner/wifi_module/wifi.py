@@ -8,9 +8,11 @@ import urequests
 repl_button = machine.Pin(0, machine.Pin.IN, machine.Pin.PULL_UP)
 repl_led = machine.Pin(5, machine.Pin.OUT)
 
-def connect_to_wifi(ssid, password):
+def connect_wifi(ssid, password):
     wlan = network.WLAN(network.STA_IF)
     wlan.active(True)
+    if wlan.isconnected():
+        print("Уже было подключено, сетевые настройки:", wlan.ifconfig())
     wlan.connect(ssid, password)
     max_wait = 10
     while max_wait > 0:
@@ -42,3 +44,26 @@ def get_example(state):
         print(response.status_code)
     else:
         raise RuntimeError(f"No WiFi connection")
+
+
+def disconnect_wifi(wlan, disable_interface=True):
+    """Безопасное отключение WiFi с освобождением ресурсов
+
+    Args:
+        wlan: Объект WLAN
+        disable_interface: Полное отключение интерфейса (освобождает UART)
+    """
+    try:
+        if wlan.isconnected():
+            print("Отключаем WiFi...")
+            wlan.disconnect()
+            time.sleep(0.5)  # Даём время на разрыв соединения
+
+        if disable_interface:
+            wlan.active(False)
+            print("WiFi интерфейс деактивирован")
+
+        return True
+    except Exception as e:
+        print(f"Ошибка отключения: {e}")
+        return False
