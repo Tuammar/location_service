@@ -7,8 +7,8 @@ AD_TYPE_TX_POWER_LEVEL = const(0x0A)
 
 FLAGS_GENERAL_DISCOVERY = const(0x06)
 
-device_name = "cu_Q_tralalelo"
-tx_power_level = -73
+device_name = "cu_P_beacon"
+tx_power_level = -73 # RSSI на расстоянии 1 метра
 
 
 def create_advertising_data(name, tx_power):

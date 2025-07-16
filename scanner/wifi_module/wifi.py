@@ -3,6 +3,7 @@ import sys
 import network
 import time
 import urequests
+import ntptime
 
 # Pin definitions
 repl_button = machine.Pin(0, machine.Pin.IN, machine.Pin.PULL_UP)
@@ -28,6 +29,17 @@ def connect_wifi(ssid, password):
         print('Не удалось подключиться.')
 
     return wlan
+
+
+def sync_time():
+    try:
+        print("Синхронизация времени с NTP...")
+        ntptime.settime()
+        print("Время синхронизировано")
+        return True
+    except Exception as e:
+        print(f"Ошибка синхронизации времени: {e}")
+        return False
 
 
 def get_example(state):

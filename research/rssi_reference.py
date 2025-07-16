@@ -6,7 +6,7 @@ from .adv_data_parser import parse_name_from_adv_data
 _IRQ_SCAN_RESULT = const(5)
 _IRQ_SCAN_DONE = const(6)
 
-TARGET_NAME = "cu_tralalelo"
+TARGET_NAME = "cu_P_beacon"
 LOG_FILE = f"rssi_{TARGET_NAME}_scan.csv"
 
 def bt_irq(event, data):

@@ -18,6 +18,9 @@ plt.plot(df.index, df["rssi"], marker='o', linestyle='', color='blue', label='RS
 plt.axhline(mean_rssi, color='red', linestyle='--', label=f'Mean: {mean_rssi:.2f}')
 plt.axhline(median_rssi, color='green', linestyle='-', label=f'Median: {median_rssi:.2f}')
 
+print(f"Mean RSSI: {mean_rssi}")
+print(f"Median RSSI: {median_rssi}")
+
 # Оформление графика
 plt.title("RSSI Over Time with Mean and Median")
 plt.xlabel("Time (index)")
