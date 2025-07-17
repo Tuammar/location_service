@@ -1,0 +1,37 @@
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: ble_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - ble_network
+    
+  subscriber:
+    build:
+      context: ./subscriber
+      dockerfile: Dockerfile
+    container_name: ble_topic_subscriber
+    depends_on:
+      - redis
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - MQTT_BROKER=31.56.196.111
+      - MQTT_PORT=1883
+      - MQTT_TOPIC=ble/p-queue
+      - MQTT_USERNAME=scanner
+      - MQTT_PASSWORD=ble-scanner-very-strong-passwd
+    networks:
+      - ble_network
+    restart: unless-stopped
+
+volumes:
+  redis_data:
+
+networks:
+  ble_network:
+    driver: bridge 
