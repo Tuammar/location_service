@@ -37,26 +37,28 @@ def on_message(client, userdata, message):
         print(f"Received message from {message.topic}: {payload}")
         userdata.append(payload)
         
-        # Save to Redis
+        # Save to Redis (общий ключ по топику)
         redis_key = f"data:{message.topic}"
         redis_client.lpush(redis_key, json.dumps(payload))
-        
-        # Keep only last 1000 messages per topic
         redis_client.ltrim(redis_key, 0, 999)
-        
-        # Also save latest data by topic
         redis_client.hset("latest_data", message.topic, json.dumps(payload))
-        
         print(f"Saved to Redis: {redis_key}")
+
+        # Раздельный сбор по beacon_name
+        beacon_name = payload.get("beacon_name")
+        if beacon_name in {"cu_C_beacon", "cu_A_beacon", "cu_B_beacon", "cu_D_beacon"}:
+            beacon_key = f"rssi:{beacon_name}"
+            redis_client.lpush(beacon_key, json.dumps(payload))
+            redis_client.ltrim(beacon_key, 0, 999)
+            print(f"Saved to Redis: {beacon_key}")
+        else:
+            print(f"Unknown beacon_name: {beacon_name}")
         
     except json.JSONDecodeError:
         print(f"Failed to decode JSON: {message.payload}")
     except Exception as e:
         print(f"Error saving to Redis: {e}")
-    
-    # We only want to process 10 messages for demo
-    if len(userdata) >= 10:
-        client.unsubscribe(topic)
+
 
 def on_connect(client, userdata, flags, reason_code, properties):
     if reason_code.is_failure:
@@ -91,4 +93,3 @@ print(f"Redis connection: {redis_client.ping()}")
 
 mqttc.connect(broker, port, 60)
 mqttc.loop_forever()
-print(f"Received the following messages: {mqttc.user_data_get()}")

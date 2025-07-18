@@ -1,4 +1,4 @@
-update_scanner: upload_main upload_wifi upload_bluetooth upload_mqtt connect
+update_scanner: upload_wifi upload_bluetooth upload_mqtt upload_main connect
 	
 upload_bluetooth:
 	mpremote fs mkdir bt_module || true

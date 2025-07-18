@@ -46,6 +46,7 @@ def get_example(state):
     # Web page (non-SSL) to get
     url = "http://example.com"
 
+    print("пытаемся отправить запрос")
     # Continually print out HTML from web page as long as we have a connection
     if state.isconnected():
 

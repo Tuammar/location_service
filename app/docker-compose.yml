@@ -18,13 +18,30 @@ services:
     depends_on:
       - redis
     environment:
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - MQTT_BROKER=31.56.196.111
-      - MQTT_PORT=1883
-      - MQTT_TOPIC=ble/p-queue
-      - MQTT_USERNAME=scanner
-      - MQTT_PASSWORD=ble-scanner-very-strong-passwd
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - MQTT_BROKER=${MQTT_BROKER}
+      - MQTT_PORT=${MQTT_PORT}
+      - MQTT_TOPIC=${MQTT_TOPIC}
+      - MQTT_USERNAME=${MQTT_USERNAME}
+      - MQTT_PASSWORD=${MQTT_PASSWORD}
+    networks:
+      - ble_network
+    restart: unless-stopped
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: ble_api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+      - subscriber
+    environment:
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
     networks:
       - ble_network
     restart: unless-stopped
